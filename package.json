@@ -1,0 +1,14 @@
+{
+  "name": "my-cursor",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "dev": "node --watch index.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "openai": "^5.3.0"
+  }
+}
