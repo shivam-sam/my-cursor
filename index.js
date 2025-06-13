@@ -1,8 +1,10 @@
 import {OpenAI} from 'openai';
-import {exec} from 'node:child_process';
+import { exec } from 'node:child_process';
 import { parse } from 'node:path';
+import dotenv from 'dotenv';
+dotenv.config();
 
-const OPENAI_KEY = '';
+const OPENAI_KEY = process.env.OPEN_API_KEY;
 
 const client = new OpenAI({apiKey: OPENAI_KEY});
 
@@ -45,6 +47,7 @@ const SYSTEM_PROMPT = `
 
     Available Tools:
     - getWeatherInfo(city: string): Returns string
+    - executeCommand(command): Returns string - Executes a given linux command on user's device and returns stdout or stderr.
 
     Example:
     START: What is weather of Patiala?
@@ -72,7 +75,7 @@ const messages = [
     { role: 'system', content: SYSTEM_PROMPT},
 ];
 
-const userQuery = 'What is the weather of Delhi and Patiala?'
+const userQuery = 'Create a folder todo app and create a fully working todo app using HTML, CSS and JS.'
 messages.push({ 'role': 'user', 'content': userQuery});
 
 
@@ -114,7 +117,7 @@ async function init() {
             const tool = parsed_response.tool;
             const input = parsed_response.input;
 
-            const value = TOOLS_MAP[tool](input);
+            const value = await TOOLS_MAP[tool](input);
             console.log(` ⚒️: Tool Call ${tool}(${input}): ${value}`);
 
             messages.push({ 
